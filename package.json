@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack && node main.js",
+    "start": "webpack && node main.js -n=30",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
