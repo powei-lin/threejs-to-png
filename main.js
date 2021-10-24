@@ -36,7 +36,7 @@ async function main() {
     try {
       const data = img.replace(/^data:image\/png;base64,/, "");
       const f = ("000" + frame).slice(-4);
-      var buf = Buffer.from(data, "base64");
+      const buf = Buffer.from(data, "base64");
       await fs.writeFile(
         path.resolve(path.join("screenshots", `frame${f}.png`)),
         buf,
@@ -61,8 +61,8 @@ async function main() {
     // const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
     await page.setViewport({
-      width: 600,
-      height: 800,
+      width: 800,
+      height: 600,
       deviceScaleFactor: 1,
     });
 
@@ -71,9 +71,7 @@ async function main() {
       if (message.text() === "DONE") {
         await page.close();
         await browser.close();
-
-        // await listen.kill()
-
+        
         console.log("> DONE!");
         process.exit(0);
       }
@@ -84,18 +82,5 @@ async function main() {
     await page.goto(web_url);
   });
 
-  // app.listen(port, () => {
-  //   console.log(`Example app listening at http://localhost:${port}`)
-  // })
-
-  // const browser = await puppeteer.launch({ headless: false });
-  // const page = await browser.newPage();
-  // const web_url = `http://localhost:${port}/scene/index.html`;
-
-  // await page.goto(web_url);
-  // await page.waitForTimeout(5000);
-  // await page.screenshot({ path: 'example.png' });
-
-  // await browser.close();
 }
 main();

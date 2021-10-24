@@ -1,7 +1,12 @@
 import * as THREE from 'three';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+
+import { FisheyeShader } from './Fisheye_kb.js'
 
 let camera, scene, renderer;
+let composer;
 let mesh;
 const AMOUNT = 4;
 let total_frame = 50;
@@ -84,7 +89,11 @@ function init() {
   renderer.shadowMap.enabled = true;
   document.body.appendChild( renderer.domElement );
 
-  //
+  composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene, camera));
+  let effect1 = new ShaderPass(FisheyeShader);
+  effect1.uniforms['h_fov'].value = 100;
+  composer.addPass(effect1);
 
   window.addEventListener( 'resize', onWindowResize );
 
@@ -129,7 +138,9 @@ async function animate() {
   mesh.rotation.x += 0.005;
   mesh.rotation.z += 0.01;
 
-  await renderer.render( scene, camera );
+  await composer.render();
+
+  // await renderer.render( scene, camera );
   if(count < total_frame){
     saveFrame();
     count += 1;
